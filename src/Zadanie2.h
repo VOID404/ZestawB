@@ -1,14 +1,35 @@
 //
-// Created by marty on 2/8/2022.
+// Created by void on 10.02.2022.
 //
 
-#ifndef UNTITLED14_ZADANIE2_H
-#define UNTITLED14_ZADANIE2_H
+#ifndef ZESTAWB_ZADANIE2_H
+#define ZESTAWB_ZADANIE2_H
 
+#include "PirateMap.h"
+#include "Zadanie.h"
 
-class Zadanie2 {
+class Zadanie2 : PirateMap, Zadanie {
+    using PirateMap::PirateMap;
+protected:
+    struct Point {
+        int x;
+        int y;
+        friend ostream &operator<<(ostream &os, const Point &point);
+    };
 
+private:
+    Point joe;
+    Point skarb;
+
+    double distance(Point a, Point b);
+    void szukaj();
+    friend ostream &operator<<(ostream &os, const Point &point);
+
+public:
+    explicit Zadanie2(PirateMap &map) : PirateMap(map) {};
+
+    void solve() override;
 };
 
 
-#endif //UNTITLED14_ZADANIE2_H
+#endif //ZESTAWB_ZADANIE2_H

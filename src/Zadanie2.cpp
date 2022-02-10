@@ -1,64 +1,59 @@
 //
-// Created by marty on 2/8/2022.
+// Created by void on 10.02.2022.
 //
 
+#include "Zadanie2.h"
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
-#include <fstream>
-#include "Zadanie2.h"
 
-struct Pozycja {
-    int x;
-    int y;
-};
+void Zadanie2::solve() {
+    szukaj();
 
-static double oblicz(Pozycja a, Pozycja b) {
-    return sqrt(pow(a.x-b.x,2)+(a.y-b.y,2));
+    auto dist = distance(skarb, joe);
+
+    cout << "Odległość od aktualnej pozycji B " << joe
+         << " do najbliższego skarbu $ " << skarb
+         << " to: " << dist << endl;
 }
 
-static Pozycja szukaj() {
-    std::fstream mapa;
-    mapa.open("mapa.txt", std::ios::in);
-    if (!mapa.good()) {
-        std::cout << "Brak mapy" << std::endl;
-        exit(0);
+double Zadanie2::distance(Zadanie2::Point a, Zadanie2::Point b) {
+    return sqrt(pow(a.x - b.x, 2) + (a.y - b.y, 2));
+
+}
+
+void Zadanie2::szukaj() {
+    std::vector<std::string> lines;
+
+    std::string line = "";
+    while (getline(this->map, line)) {
+        lines.push_back(line);
     }
 
-    std::vector<std::string> linie;
+    std::vector<Point> skarby;
 
-    std::string linia = "";
-    while (getline(mapa,linia)){
-        linie.push_back(linia);
-    }
-
-    mapa.close();
-
-    Pozycja joe;
-    std::vector<Pozycja> skarby;
-
-    for (int i; i < linie.size(); ++i) {
-        for (int j =0; j < linie[i].length(); ++j) {
-            if (linie[i].at(j)=='B') {
+    for (int i; i < lines.size(); ++i) {
+        for (int j = 0; j < lines[i].length(); ++j) {
+            if (lines[i].at(j) == 'B') {
                 joe.x = i + 1;
                 joe.y = j + 1;
-            } else if (linie[i].at(j) == '$'){
-                Pozycja skarb;
-                skarb.x = i+1;
-                skarb.y = j+1;
+            } else if (lines[i].at(j) == '$') {
+                Point skarb;
+                skarb.x = i + 1;
+                skarb.y = j + 1;
                 skarby.push_back(skarb);
             }
         }
     }
 
-    Pozycja najbliższy;
-    najbliższy.x = linie[1].length();
-    najbliższy.y = linie.size();
-    double odległosc = oblicz(joe,najbliższy);
+    Point najbliższy;
+    najbliższy.x = lines[1].length();
+    najbliższy.y = lines.size();
+    double odległosc = distance(joe, najbliższy);
 
     for (int i = 0; i < skarby.size(); ++i) {
-        double temp = oblicz(joe,skarby[i]);
+        double temp = distance(joe, skarby[i]);
         if (temp < odległosc) {
             odległosc = temp;
             najbliższy.x = skarby[i].x;
@@ -66,7 +61,10 @@ static Pozycja szukaj() {
         }
     }
 
-    std::cout << "Odległość od aktualnej pozycji B (" << joe.x << "," << joe.y << ") do najbliższego skarbu $ (" << najbliższy.x << "," << najbliższy.y << ") to:" << odległosc << std::endl;
+    skarb = najbliższy;
+}
 
-    return  najbliższy;
+ostream &operator<<(ostream &os, const Zadanie2::Point &point) {
+    os << "(" << point.x << ", " << point.y << ")";
+    return os;
 }

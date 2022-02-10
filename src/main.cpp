@@ -2,6 +2,9 @@
 #include <fstream>
 #include <vector>
 
+#include "Zadanie2.h"
+#include "Zadanie4.h"
+
 #ifdef _WIN32
 #define mapPath "C:\\Users\\marty\\Desktop\\mapa.txt"
 #endif
@@ -13,30 +16,8 @@
 using namespace std;
 
 int main() {
-    fstream mapa;
-    mapa.open(mapPath, fstream::in);
-
-    if (!mapa.good()) {
-        cout << "Brak mapy w " << mapPath << endl;
-        return 0;
-    }
-
-    vector<string> linie;
-    string linia;
-
-    int najdluzszy = 0;
-    int wysokosc = 0;
-    int sumMapa = 0;
-
-    while (getline(mapa, linia)) {
-        int dlugosc = linia.length();
-        najdluzszy = max(dlugosc, najdluzszy);
-        sumMapa += dlugosc;
-        ++wysokosc;
-    }
-    mapa.close();
-
-    double wynik = (sumMapa * 100) / (najdluzszy * wysokosc);
-    cout << (wynik >= 80 ? "ok" : "nok") << endl;
+    PirateMap map(mapPath);
+    Zadanie2(map).solve();
+    Zadanie4(map).solve();
+    return 0;
 }
-
